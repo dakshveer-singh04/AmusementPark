@@ -1,5 +1,8 @@
 #pragma once
 #include <string>
+#include <iostream>
+
+unsigned int id ;
 
 using namespace std;
 
@@ -10,6 +13,9 @@ class Guest{
         string name;
         unsigned short int age;
         char gender;
+        unsigned int height;
         
+    public:
+        void entry() ;
         
 };

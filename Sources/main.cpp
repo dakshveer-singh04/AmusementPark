@@ -1,11 +1,17 @@
 #include "../Headers/Guest.cpp"
 #include "../Headers/Ride.cpp"
+#include <map>
 #include <iostream>
 
 using namespace std;
+extern int i ;
 
 int main(){
+    unsigned int uid; 
     int ch;
+    i = 0 ;
+    Guest number[1000] ;  // array of objects
+    map<unsigned int,Guest>database ;     // map
 
     do {
         cout<<"WELOCOME TO AMUSEMENT PARK"<<endl;
@@ -34,6 +40,9 @@ int main(){
             case 4:{
                 cout<<"Unsaved data will be lost"<<endl;
                 ch=0;
+                i++ ;
+                number[i].entry() ;     // entry for guest number i object
+                database.insert(make_pair(i,number[i])) ;
                 break;
             }
             default:{
