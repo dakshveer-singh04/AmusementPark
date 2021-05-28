@@ -2,15 +2,17 @@
 #include "../Headers/Ride.cpp"
 #include <map>
 #include <iostream>
+#include <stdio.h>
 
 using namespace std;
-extern int i ;
+int i;
 
 int main(){
     unsigned int uid; 
     int ch;
     i = 0 ;
     Guest number[1000] ;  // array of objects
+    
     map<unsigned int,Guest>database ;     // map
 
     do {
@@ -19,13 +21,19 @@ int main(){
         cout<<"1. Admin Login"<<endl;
         cout<<"2. Support Login"<<endl;
         cout<<"3. Rides Login"<<endl;
-        cout<<"4. Guest Login"<<endl;
+        cout<<"4. Guest Booking New"<<endl;
+        cout<<"5. Guest Login"<<endl ;
 
         cout<<"Enter your choice : ";
         cin>>ch;
 
         switch(ch){
             case 1:{
+                int admin ;
+                cout<<"Enter your admin id\t" ;
+                cin>>admin ;
+
+
                 cout<<""<<endl;
                 break;
             }
@@ -38,13 +46,22 @@ int main(){
                 break;
             }
             case 4:{
+                int tickets ;
                 cout<<"Unsaved data will be lost"<<endl;
+                cout<<"How many tickets you want to book\t" ;
+                cin>>tickets ;
                 ch=0;
-                i++ ;
-                number[i].entry() ;     // entry for guest number i object
-                database.insert(make_pair(i,number[i])) ;
+                for (int x=0 ; x<tickets ; x++)
+                {
+                    i++ ;
+                    number[i].entry() ;     // entry for guest number i object
+                    database.insert(make_pair(i,number[i])) ;
+                    cout<<"Your uid is "<<i<<endl ;  
+                }
                 break;
             }
+            case 5:
+
             default:{
                 cout<<"Invalid Choice"<<endl;
                 break;
