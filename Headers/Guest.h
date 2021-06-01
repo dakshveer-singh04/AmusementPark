@@ -24,6 +24,7 @@ class Guest{
 class admin{
     private:
     unsigned int admin_id ;
+    
     public:
     void login(int admin_id) ;
     

@@ -19,7 +19,7 @@ void Guest::entry()
 
 void admin::login(int admin_id)
 {
-    string password = "admin@amusement" ;
+    string password = "@admin" ;    // all admins will have same and fixed password
     string pass ;
     cout<<"Enter the admin password\n" ;
     cin>>pass ;
@@ -33,7 +33,7 @@ void admin::login(int admin_id)
         switch(type)
         {
             case 1:{
-                
+
                 break ;
             }
 

@@ -7,34 +7,39 @@
 using namespace std;
 int i;
 
+// password for admin entry is @admin
+
 int main(){
     unsigned int uid; 
     int ch;
+    int flag = 1 ;
     i = 0 ;
     Guest number[1000] ;  // array of objects
-    
-    map<unsigned int,Guest>database ;     // map
+                          // each guest data with be stored in seprate object
+    map<unsigned int,Guest>database ;     // map for uid and guest
 
-    do {
-        cout<<"WELOCOME TO AMUSEMENT PARK"<<endl;
+    while (flag)
+     {
+        cout<<"WELCOME TO AMUSEMENT PARK"<<endl;
 
         cout<<"1. Admin Login"<<endl;
         cout<<"2. Support Login"<<endl;
         cout<<"3. Rides Login"<<endl;
         cout<<"4. Guest Booking New"<<endl;
         cout<<"5. Guest Login"<<endl ;
+        cout<<"6. To exit"<<endl ;
 
         cout<<"Enter your choice : ";
         cin>>ch;
 
         switch(ch){
             case 1:{
-                int admin ;
+                int id ;
                 cout<<"Enter your admin id\t" ;
-                cin>>admin ;
+                cin>>id ;
+                admin obj ;
+                obj.login(id) ;
 
-
-                cout<<""<<endl;
                 break;
             }
 
@@ -70,7 +75,13 @@ int main(){
                 auto itr = database.find(uid) ;
                 Guest tmp_obj = itr->second ;
                 tmp_obj.bookride() ;
+                break ;
 
+            }
+
+            case 6:{
+                flag = 0 ;
+                break ;
             }
 
             default:{
@@ -79,7 +90,7 @@ int main(){
             }
         }
 
-    } while(ch);
+    } 
 
     return 0;
 }
