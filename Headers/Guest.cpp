@@ -13,6 +13,7 @@ void Guest::entry()
     cout<<"\nHeight :\t" ;
     cin>>height ;
     cout<<"\nThe amount to be paid\tRs. 1500\n" ;
+    booking_status = true ;
 
 }
 
@@ -32,6 +33,7 @@ void admin::login(int admin_id)
         switch(type)
         {
             case 1:{
+                
                 break ;
             }
 
@@ -49,4 +51,11 @@ void admin::login(int admin_id)
         }
     }
 
+}
+
+void Guest::bookride()
+{
+    // display rides
+    // create object for each ride
+    // pass age into ride func and check and confirm booking
 }

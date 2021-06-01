@@ -17,6 +17,7 @@ class Guest{
         
     public:
         void entry() ;
+        void bookride() ;
         
 };
 

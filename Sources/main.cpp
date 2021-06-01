@@ -37,14 +37,17 @@ int main(){
                 cout<<""<<endl;
                 break;
             }
+
             case 2:{
                 cout<<""<<endl;
                 break;
             }
+
             case 3:{
                 cout<<""<<endl;
                 break;
             }
+            
             case 4:{
                 int tickets ;
                 cout<<"Unsaved data will be lost"<<endl;
@@ -60,7 +63,15 @@ int main(){
                 }
                 break;
             }
-            case 5:
+
+            case 5:{
+                cout<<"Enter your UID"<<endl ;
+                cin>>uid ;
+                auto itr = database.find(uid) ;
+                Guest tmp_obj = itr->second ;
+                tmp_obj.bookride() ;
+
+            }
 
             default:{
                 cout<<"Invalid Choice"<<endl;
