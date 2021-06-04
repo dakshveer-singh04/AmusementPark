@@ -55,6 +55,7 @@ void admin::login(int admin_id)
 
 void Guest::bookride()
 {
+    cout<<"HI" ;
     // display rides
     // create object for each ride
     // pass age into ride func and check and confirm booking

@@ -16,7 +16,7 @@ int main(){
     i = 0 ;
     Guest number[1000] ;  // array of objects
                           // each guest data with be stored in seprate object
-    map<unsigned int,Guest>database ;     // map for uid and guest
+    map<unsigned int,Guest>database ;     // map for uid and guest obj
 
     while (flag)
      {
@@ -73,7 +73,7 @@ int main(){
                 cout<<"Enter your UID"<<endl ;
                 cin>>uid ;
                 auto itr = database.find(uid) ;
-                Guest tmp_obj = itr->second ;
+                Guest tmp_obj = itr->second ;        // it is not working have a look
                 tmp_obj.bookride() ;
                 break ;
 
@@ -94,3 +94,6 @@ int main(){
 
     return 0;
 }
+
+/* ride names
+wonderland, thunder, nitro, deep space. top spin, duck-duck, splash */
