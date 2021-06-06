@@ -4,6 +4,7 @@
 using namespace std;
 
 class Ride{
+    signed int RideUid;
     string name;
     string description;
 
