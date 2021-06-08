@@ -1,0 +1,2 @@
+Ride : 4
+MaxRide : 7

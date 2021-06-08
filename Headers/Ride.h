@@ -11,4 +11,7 @@ class Ride{
     unsigned short int min_age;
     unsigned short int max_age;
 
+    public: 
+
+    Ride(unsigned int, string, string, unsigned short int, unsigned short int);
 };
