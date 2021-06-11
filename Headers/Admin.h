@@ -5,6 +5,7 @@ using namespace std;
 
 class Admin{
     string pass;
+    float guestIndex;
     unsigned int rideCount;
     unsigned int maxRideCount;
 
@@ -20,6 +21,8 @@ class Admin{
     void addRide();
     void deleteRide();
 
+    void updateRide();
+
     void searchGuest();
 
     public :
@@ -27,4 +30,3 @@ class Admin{
     Admin();
     friend int main();
 };
-

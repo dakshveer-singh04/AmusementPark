@@ -1,6 +1,7 @@
 #include "../Headers/Guest.cpp"
 #include "../Headers/Ride.cpp"
 #include "../Headers/Admin.cpp"
+//#include "../Headers/Extras.cpp"
 #include <iostream>
 
 using namespace std;
@@ -43,7 +44,7 @@ int main(){
                     do {
                         cout<<endl<<"1. Search a Guest  "<<endl;
                         cout<<"2. Add a new Ride  "<<endl;
-                        cout<<"3. Change a Ride  "<<endl;
+                        cout<<"3. Update a Ride  "<<endl;
                         cout<<"4. Delete a ride  "<<endl;
                         cout<<"5. Change password  "<<endl;
                         cout<<"6. Exit  "<<endl;
@@ -62,7 +63,8 @@ int main(){
                                 break;
                             }
                             case 3: {
-                                cout<<"Option not available now"<<endl;
+                                cout<<"Option under available now"<<endl;
+                                Ad.updateRide();
                                 break;
                             }
                             case 4: {
@@ -89,7 +91,61 @@ int main(){
             }
 
             case 2:{
-                cout<<"Option not available now"<<endl;
+                unsigned short int RideId;
+                cout<<"Option under development now"<<endl;
+                
+                do {
+                    cout<<"Enter Ride Id to operate (0 to exit ): ";
+                    cin>>RideId;
+
+                    if (RideId==0){
+                        break;
+                    }
+                } while ( !FoundRide(RideId));
+
+                if (RideId==0){
+                    break;
+                }
+
+                string pass("parkRide"), user_pass;
+                pass.append(to_string(RideId));
+
+                do {
+                    cout<<"Enter password : ";
+                    cin>>user_pass;
+
+                } while(user_pass != pass);
+
+                int ch;
+                Ride CurrRide(RideId); // Creating the ride instance
+
+                do {
+                    cout<<endl<<"Menu for Ride No "<<RideId<<endl;
+                    cout<<"1. Start a new session : "<<endl;
+                    cout<<"2. Exit "<<endl;
+
+                    cout<<"Enter your choice : ";
+                    cin>>ch;
+
+                    switch(ch){
+                        case 1:{
+                            cout<<"Option under development now";
+                            CurrRide.StartNewSession();
+                            break;
+                        }
+                        case 2:{
+                            CurrRide.putSessionId();
+                            ch=0;
+                            break;
+                        }
+                        default :{
+                            cout<<"Invalid choice !"<<endl;
+                            break;
+                        }
+                    }
+
+                } while (ch);
+
 
 
                 break;

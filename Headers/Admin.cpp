@@ -2,6 +2,7 @@
 #include <fstream>
 #include <iostream>
 #include <sstream>
+#include <ctime>
 
 using namespace std;
 
@@ -17,6 +18,7 @@ void Admin::loadPass(){
     */
     string p;
 
+//fstream ifstream ofstream
     ifstream file;
     file.open("../Files/Admin/Password.txt");
 
@@ -178,14 +180,14 @@ void Admin::updateMaxRideCount(int j){
 
 void Admin::addRide(){
     unsigned int uid = this->maxRideCount + 1;
-    unsigned short int minAge, maxAge;
+    unsigned short int minAge, maxAge, occupancy;
     string ride_name,desc;
 
     cout<<"Enter ride name : ";
     cin.ignore();
     cin>>ride_name;
 
-    cout<<"Enter ride description : ";
+    cout<<"Enter ride description (don't use any commas{,} ) : ";
     cin.ignore();
     getline(cin,desc);
 
@@ -195,12 +197,16 @@ void Admin::addRide(){
     cout<<"Enter maximum age : ";
     cin>>maxAge;
 
+    cout<<"Enter maximum occupancy : ";
+    cin>>occupancy;
+
     stringstream ss;
     ss<<uid<<",";
     ss<<ride_name<<",";
     ss<<desc<<",";
     ss<<minAge<<",";
-    ss<<maxAge<<'\n';
+    ss<<maxAge<<",";
+    ss<<occupancy<<'\n';
 
     fstream file;
     file.open("../Files/Rides/Rides.txt");
@@ -216,6 +222,20 @@ void Admin::addRide(){
         this->updateRideCount(this->rideCount);
         this->maxRideCount++;
         this->updateMaxRideCount(this->maxRideCount);
+
+        //creating the ride file
+        string path("../Files/Rides/Ride");
+        path.append( to_string(uid));
+        path.append(".txt");
+        cout<<"path to create file is "<<path<<endl;
+
+        ofstream newFile(path);
+        newFile<<getDate()<<endl;
+        newFile<<0<<endl;
+        newFile<<endl;
+        newFile.close();
+
+        cout<<"Ride Added Successfully!"<<endl;
     } 
     else{
         cout<<"Problem opening Rides file!"<<endl;  
@@ -258,7 +278,84 @@ void Admin::deleteRide(){
         if (flag){
             this->rideCount--;
             this->updateRideCount(this->rideCount);
+
+            string path("../Files/Rides/Ride");
+            path.append( to_string(id));
+            path.append(".txt");
+
+            remove(path.c_str());
+
             cout<<"Ride deleted successfully"<<endl;
+        } else{
+            cout<<"Ride not found!"<<endl;
+        }
+    }
+}
+
+void Admin::updateRide(){
+    int id;
+    cout<<"Enter ride Id to update : ";
+    cin>>id;
+
+    if ( id>this->maxRideCount || id<1 ){
+        cout<<"Invalid Id to update!"<<endl;
+    } else{
+        bool flag=false;
+        string line;
+    
+        ifstream file;
+        file.open("../Files/Rides/Rides.txt");
+        ofstream outfile("../Files/Rides/tmp.txt"); //file to store non deleted values
+
+        while(getline(file,line)){
+            stringstream ss(line);
+            int tmpId;
+            ss>>tmpId;
+            if (tmpId!=id){
+                outfile<<line<<endl;
+            } else if (tmpId==id) {
+                unsigned short int minAge, maxAge;
+                string ride_name,desc, occupancy;
+                //Ride found anf now asking for new details
+                cout<<"Enter ride name : ";
+                cin.ignore();
+                cin>>ride_name;
+
+                cout<<"Enter ride description (don't use any commas{,} ) : ";
+                cin.ignore();
+                getline(cin,desc);
+
+                cout<<"Enter minimum age : ";
+                cin>>minAge;
+
+                cout<<"Enter maximum age : ";
+                cin>>maxAge;
+
+                cout<<"Enter maximum occupancy : ";
+                cin>>occupancy;
+
+                stringstream ss;
+                ss<<id<<",";
+                ss<<ride_name<<",";
+                ss<<desc<<",";
+                ss<<minAge<<",";
+                ss<<maxAge<<",";
+                ss<<occupancy<<'\n';
+                outfile<<ss.str();
+                //end
+                flag=true;
+            }
+        }
+
+        outfile.close();
+        file.close();
+
+        //deleting previous file
+        remove("../Files/Rides/Rides.txt");
+        rename("../Files/Rides/tmp.txt","../Files/Rides/Rides.txt");
+    
+        if (flag){
+            cout<<"Ride updated successfully"<<endl;
         } else{
             cout<<"Ride not found!"<<endl;
         }
