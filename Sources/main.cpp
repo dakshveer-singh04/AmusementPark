@@ -6,6 +6,10 @@
 using namespace std;
 
 bool FoundRide(unsigned short int CurrID){
+    /*
+        Function to check if a ride is found
+    */
+
     bool flag = false;
     string line;
     ifstream file;
@@ -65,7 +69,8 @@ int main(){
                         cout<<"3. Update a Ride  "<<endl;
                         cout<<"4. Delete a ride  "<<endl;
                         cout<<"5. Change password  "<<endl;
-                        cout<<"6. Exit  "<<endl;
+                        cout<<"6. See Rating "<<endl;
+                        cout<<"7. Exit  "<<endl;
 
                         cout<<"Enter your choice : ";
                         cin>>a_ch;
@@ -98,7 +103,10 @@ int main(){
                                 Ad.changePass();
                                 break;
                             }
-                            case 6: {
+                            case 6:{
+                                Ad.seeRating();
+                            }
+                            case 7: {
                                 a_ch=0;
                                 break;
                             }

@@ -6,8 +6,8 @@
 using namespace std;
 
 class Admin{
-    string pass;
-    float guestIndex;
+    string pass;    //password of Admin
+    float guestIndex;   //rating 
     unsigned int rideCount;
     unsigned int maxRideCount;
 
@@ -22,11 +22,12 @@ class Admin{
 
     void addRide();
     void deleteRide();
-
     void updateRide();
 
     void searchGuest(unsigned long long int Gid);
 
+    void seeRating();
+    
     public :
 
     Admin();

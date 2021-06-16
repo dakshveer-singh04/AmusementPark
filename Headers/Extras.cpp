@@ -6,9 +6,10 @@
 
 using namespace std;
 
-
-
 string getDate(){
+    /*  Function to return Date string
+    */
+
     time_t now = time(0) ;
     tm* date_time = localtime(&now) ;
 
@@ -31,7 +32,10 @@ string getDate(){
 }
 
 
-string hashFunc(string password){
+string hashFunc(string password){ 
+    /*  A Hashfunction to return the hash string of password
+        Always the Hashes are compared not the actual string
+    */
     stringstream local ;
     
     int len = password.length() ;
@@ -67,6 +71,9 @@ bool between(T a, T min, T max){
 }
 
 string getTime(){
+    /* Function to return string of time
+    */
+
     time_t now = time(0);
     tm *ltm = localtime(&now);
     // India is +5:30 frot GMT

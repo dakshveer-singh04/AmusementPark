@@ -13,7 +13,7 @@ class Guest{
         string number ;
         int guest_count ;
         unsigned long long int get_id() ;
-        int overall ;
+        float overall ;
         int previous ;
 
     public:

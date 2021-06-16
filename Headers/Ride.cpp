@@ -10,12 +10,17 @@ using namespace std;
 //Ride password is parkRide_<ride_uid>
 
 Ride::Ride(int CurrID){
+    /*  Constructor to create the Ride object and load data in it 
+    */
     this->loadData(CurrID);
     this->getSessionCount();
     cout<<"Ride Instance created successfully!"<<endl;
 }
 
 void Ride::loadData(unsigned short int CurrID){
+    /* Searches if the given Ride Id is there 
+        and load data to object
+    */
     string line;
     ifstream file;
      
@@ -49,6 +54,8 @@ void Ride::loadData(unsigned short int CurrID){
 }
 
 void Ride::setData(unsigned int uid, string ride_name, string desc, unsigned short int minAge, unsigned short int maxAge, unsigned short int occu){
+    /* A stter function
+    */
     this->RideUid=uid;
     this->name = ride_name;
     this->description = desc;
@@ -59,8 +66,9 @@ void Ride::setData(unsigned int uid, string ride_name, string desc, unsigned sho
 
 
 string Ride::getSessionId(int Id){
-    /*
-    Date:Ride:Count
+    /*  Generates unique Session Id in the form 
+        Date:Ride:Count
+        and return its string
     */
     string ans = getDate();
     ans.append(":");
@@ -79,6 +87,8 @@ string Ride::getSessionId(int Id){
 
 
 void Ride::putSessionId(){
+    /* Puts the count in file
+    */
     string path("../Files/Rides/Ride");
     path.append( to_string(this->RideUid));
     path.append(".txt");
@@ -92,6 +102,8 @@ void Ride::putSessionId(){
 }
 
 void Ride::getSessionCount(){
+    /* Loads the session count from file
+    */
     string path("../Files/Rides/Ride");
     path.append( to_string(this->RideUid));
     path.append(".txt");
@@ -116,6 +128,11 @@ void Ride::getSessionCount(){
 
 
 void Ride::StartNewSession(){
+    /* Calls function to get its unique session Id
+        Admit the guest if all constraint are satisfied
+        Put the data in Ride File
+    */
+
     string SessionId = this->getSessionId(++this->SessionCount);
     
     string path("../Files/Rides/Ride");
@@ -145,8 +162,7 @@ void Ride::StartNewSession(){
             }
             else{
                 if ( !CheckGuest(g.age) ){
-                    cout<<"Guest can't enter this ride"<<endl;    
-                    cout<<"because age is "<<g.age<<endl;    
+                    cout<<"Guest can't enter this ride"<<endl;  
                 } 
                 else{
                     cout<<"Entry admitted"<<endl;
@@ -215,7 +231,9 @@ void Ride::StartNewSession(){
 }
 
 bool Ride::CheckGuest(unsigned short int age){
-    cout<<"Guest age is "<<age<<" MInage:"<<this->min_age<<" MAxAge:"<<this->max_age<<endl;
+    /* Checks if the Guest is allowed in the Ride
+        If not it gives the appropriate error message
+    */
     if ( between(age, this->min_age, this->max_age) ){
         return true;
     }

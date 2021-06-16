@@ -16,6 +16,8 @@ Admin::Admin(){
 void Admin::loadPass(){
     /*  Function to read the password from file
         and load it in the Class
+        
+        the password is hashed then stored for security purpose
     */
     string p;
 
@@ -36,9 +38,8 @@ void Admin::loadPass(){
 
 
 void Admin::changePass(){
-    /*  Function to change password*/
-
-    //later add a password checker 
+    /*  Function to change password, after necessary checks */
+    
     string old_pass,pass1,pass2;
     do {
         cout<<"Enter old password : ";
@@ -127,7 +128,7 @@ void Admin::loadMaxRideCount(){
     /*  Function to read the RideCount from file
         and load it in the Class
         
-        First number in file is required
+        First number of file is required
     */
     string s; char c;
     int i;
@@ -178,6 +179,10 @@ void Admin::updateMaxRideCount(int j){
 }
 
 void Admin::addRide(){
+    /* Function to create a new Ride,
+        and also create its necessary files 
+    */
+
     unsigned int uid = this->maxRideCount + 1;
     unsigned short int minAge, maxAge, occupancy;
     string ride_name,desc;
@@ -242,6 +247,11 @@ void Admin::addRide(){
 }
 
 void Admin::deleteRide(){
+    /* Function to delete the new Ride,
+        and also delete its necessary files,
+        it also decrements the ridecount 
+    */
+
     int id;
     cout<<"Enter ride Id to delete : ";
     cin>>id;
@@ -292,6 +302,8 @@ void Admin::deleteRide(){
 }
 
 void Admin::updateRide(){
+    /* Function to update the ride details
+    */
     int id;
     cout<<"Enter ride Id to update : ";
     cin>>id;
@@ -363,8 +375,9 @@ void Admin::updateRide(){
 
 
 void Admin::searchGuest(unsigned long long int GuestID){
-
-    /*Check if guest is valid*/
+    /*  Check if guest is valid
+        And display the details of its last ride
+    */
     Guest g(GuestID);
 
     if (g.uid == 0 ) {
@@ -398,7 +411,7 @@ void Admin::searchGuest(unsigned long long int GuestID){
                 stringstream tt(ss.str());
 
                 while (getline(tt,session,','));
-                cout<<"Last Session ID : "<<session<<endl;
+                cout<<"Last Session Id : "<<session<<endl;
 
                 //to extract 
                 stringstream temp(session);
@@ -439,21 +452,30 @@ void Admin::searchGuest(unsigned long long int GuestID){
                 else{
                     cout<<"Error opening Ride file"<<endl;
                 } 
-
                 break;
             }
         }
-
-        
     }
     else{
         cout<<"Error opening Guestdata file"<<endl;
     }
     file.close();
+}
 
 
+void Admin::seeRating(){
 
+    ifstream file;
+    file.open("../Files/Admin/Guest.txt");
+    string line,tmp;
+    float rating;
 
+    for (int i=0; i<3; i++){
+        getline(file,line);
+    }
 
-
+    stringstream ss(line);
+    ss>>tmp;
+    ss>>rating;
+    cout<<"Cummulative so far : "<<(rating)<<endl;
 }
