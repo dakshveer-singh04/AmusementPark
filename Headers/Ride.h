@@ -1,7 +1,10 @@
 #pragma once
 #include <string>
+//#include "Extras.cpp"
 
 using namespace std;
+
+/*Helping functions*/
 
 class Ride{
     signed int RideUid, SessionCount;
@@ -20,8 +23,11 @@ class Ride{
 
     void StartNewSession();
 
-    int getSessionId();
+    string getSessionId(int);
     void putSessionId();
 
     void getSessionCount();
+    bool CheckGuest(unsigned short int a); // to check if a guest can enter the ride
 };
+
+

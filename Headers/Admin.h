@@ -1,4 +1,6 @@
 #pragma once
+#include "Extras.cpp"
+#include "Guest.cpp"
 #include <string>
 
 using namespace std;
@@ -23,7 +25,7 @@ class Admin{
 
     void updateRide();
 
-    void searchGuest();
+    void searchGuest(unsigned long long int Gid);
 
     public :
 

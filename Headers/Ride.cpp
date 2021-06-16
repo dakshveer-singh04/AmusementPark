@@ -1,9 +1,9 @@
 #pragma once
 #include "Ride.h"
-#include "Extras.cpp"
 #include <iostream>
 #include <sstream>
 #include <fstream>
+#include <ctime>
 
 using namespace std;
 
@@ -32,15 +32,16 @@ void Ride::loadData(unsigned short int CurrID){
 
         if (tmpId==CurrID){
             getline(ss,tmp,',');
-            getline(ss,name,',');
+            getline(ss,ride_name,',');
             getline(ss,desc,',');
             ss>>minAge;
             getline(ss,tmp,',');
             ss>>maxAge;
             getline(ss,tmp,',');
             ss>>occupancy;
-
-            this->setData(CurrID,ride_name,desc,min_age,max_age,occupancy);
+            //cout<<"minage loaded is : "<<minAge<<endl;
+            //cout<<"maxage loaded is : "<<maxAge<<endl;
+            this->setData(CurrID,ride_name,desc,minAge,maxAge,occupancy);
 
             break;
         }
@@ -57,27 +58,23 @@ void Ride::setData(unsigned int uid, string ride_name, string desc, unsigned sho
 }
 
 
-int Ride::getSessionId(){
+string Ride::getSessionId(int Id){
+    /*
+    Date:Ride:Count
+    */
+    string ans = getDate();
+    ans.append(":");
+    ans.append(to_string(this->RideUid));
+    ans.append(":");
 
-    string path("../Files/Rides/Ride");
-    path.append( to_string(this->RideUid));
-    path.append(".txt");
+    if (Id<10){
+        ans.append("00");
+    } else if (Id<100){
+        ans.append("0");
+    } 
+    ans.append( to_string(Id));
 
-
-    fstream rideFile;
-    rideFile.open(path);
-
-    string date;
-    rideFile>>date;
-
-    if (date == getDate()) {
-        int ans;
-        rideFile>>ans;
-        this->SessionCount = ans;
-
-    } else {
-        this->SessionCount = 0;
-    }
+    return ans;
 }
 
 
@@ -99,22 +96,135 @@ void Ride::getSessionCount(){
     path.append( to_string(this->RideUid));
     path.append(".txt");
 
-    ifstream rideFile;
+    fstream rideFile;
     rideFile.open(path);
 
-    string tmp;
-    int ans;
-    rideFile>>tmp;
-    rideFile>>ans;
+    string date;
+    rideFile>>date;
 
-    cout<<"Session Count is "<<ans<<endl;
-    this->SessionCount = ans;
+    if (date == getDate()) {
+        int ans;
+        rideFile>>ans;
+        this->SessionCount = ans;
+
+    } else {
+        this->SessionCount = 0;
+    }
+
+    cout<<"Session Count is "<<this->SessionCount<<endl;
 }
 
 
 void Ride::StartNewSession(){
-
-    int SessionId = ++ this->SessionCount;
+    string SessionId = this->getSessionId(++this->SessionCount);
     
+    string path("../Files/Rides/Ride");
+    path.append( to_string(this->RideUid));
+    path.append(".txt");
+
+    ofstream file;
+    file.open(path,ios::app);
+
+    stringstream guestData,output;
+    
+    unsigned int c=0;
+    unsigned long long int GuestID;
+
+    do {
+        cout<<endl<<"Enter Guest Id (0 to end session ): ";
+        cin>>GuestID;
+
+        if ( GuestID==0 ){
+            break;
+        }
+        else {
+            Guest g(GuestID);
+
+            if (g.uid == 0 ) {
+                cout<<"Guest not found"<<endl;
+            }
+            else{
+                if ( !CheckGuest(g.age) ){
+                    cout<<"Guest can't enter this ride"<<endl;    
+                    cout<<"because age is "<<g.age<<endl;    
+                } 
+                else{
+                    cout<<"Entry admitted"<<endl;
+                    guestData<<GuestID<<",";
+                    guestData<<getTime()<<",";
+                    guestData<<getDate()<<endl;
+                    c++;
+
+                    /*Searching Uid in Guest track and pushing the data*/
+                    bool flag=false;
+                    fstream file;
+                    file.open("../Files/Guest/GuestTrack.txt");
+                    ofstream outfile("../Files/Guest/tmp.txt"); //file to store non deleted values
+
+
+                    string data;
+                    if (file.is_open()){
+
+                        while( getline(file,data)){
+                            stringstream ss(data);
+
+                            unsigned long long int Id;
+                            ss>>Id;
+
+                            if (Id!=GuestID){
+                                outfile<<data<<endl;
+                            }
+                            else {
+                                flag = true;
+                                stringstream ans;
+                                ans<<ss.str()<<","<<SessionId<<endl;
+                                outfile<<ans.str();                
+                            }
+                        }
+                    }
+                    else{
+                        cout<<"Error opening GuestTrack file"<<endl;
+                    }
+
+                    file.close();
+                    outfile.close();
+
+                    //deleting previous file
+                    remove("../Files/Guest/GuestTrack.txt");
+                    rename("../Files/Guest/tmp.txt","../Files/Guest/GuestTrack.txt");
+                
+                    if (flag){
+                        cout<<"GuestTrack updated successfully"<<endl;
+                    } else{
+                        cout<<"GuestTrack not found!"<<endl;
+                    }
+                }
+            }
+        }
+
+    } while(GuestID && c<=this->occupancy);
+
+    if (c==this->occupancy){
+        cout<<"Ride occupancy reached"<<endl;
+    } 
+
+    output<<"Session: "<<SessionId<<"  Date: "<<getDate()<<"  Time: "<<getTime()<<"  Count: "<<c<<endl;
+    output<<guestData.str()<<endl;
+
+    file<<output.str()<<endl;
+}
+
+bool Ride::CheckGuest(unsigned short int age){
+    cout<<"Guest age is "<<age<<" MInage:"<<this->min_age<<" MAxAge:"<<this->max_age<<endl;
+    if ( between(age, this->min_age, this->max_age) ){
+        return true;
+    }
+    else if ( age>this->max_age){
+        cout<<"Maxmimum age allowed is "<<max_age<<" Guest is "<<age<<endl;
+    }
+    else if ( this->min_age>age){
+        cout<<"Minimum age allowed is "<<min_age<<" Guest is "<<age<<endl;
+    }
+    return false;
 }
 

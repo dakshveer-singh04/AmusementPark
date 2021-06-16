@@ -1,8 +1,9 @@
+#pragma once
 #include "Admin.h"
 #include <fstream>
 #include <iostream>
-#include <sstream>
 #include <ctime>
+#include <sstream>
 
 using namespace std;
 
@@ -42,7 +43,7 @@ void Admin::changePass(){
     do {
         cout<<"Enter old password : ";
         cin>>old_pass;
-    } while( old_pass != this->pass);
+    } while( hashFunc(old_pass) != this->pass);
     
     do {
         cout<<"Enter new password : ";
@@ -55,7 +56,7 @@ void Admin::changePass(){
             ofstream file;
             file.open("../Files/Admin/Password.txt");
             file.seekp(0);
-            file<<pass1;
+            file<<hashFunc(pass1);
             file.close();
 
             this->loadPass();
@@ -175,8 +176,6 @@ void Admin::updateMaxRideCount(int j){
     cout<<"Current max Count is : "<<j<<endl;
     this->maxRideCount = j ;
 }
-
-
 
 void Admin::addRide(){
     unsigned int uid = this->maxRideCount + 1;
@@ -360,4 +359,101 @@ void Admin::updateRide(){
             cout<<"Ride not found!"<<endl;
         }
     }
+}
+
+
+void Admin::searchGuest(unsigned long long int GuestID){
+
+    /*Check if guest is valid*/
+    Guest g(GuestID);
+
+    if (g.uid == 0 ) {
+        cout<<"Guest not found"<<endl;
+        return;
+    }
+    else{
+        cout<<endl<<"Guest Information loaded successfully"<<endl;
+        cout<<"Id : "<<g.uid<<endl;
+        cout<<"Name : "<<g.name<<endl;
+        cout<<"Age : "<<g.age<<endl;
+        cout<<"Gender : "<<g.gender<<endl;
+        cout<<"Number : "<<g.number<<endl;
+    }
+
+
+    string path("../Files/Guest/GuestTrack.txt"), data, tmp;
+    ifstream file;
+    file.open(path);
+    
+    if (file.is_open()){
+
+        while (getline(file,data)){
+            stringstream ss(data);        //making stringstream out of string
+
+            unsigned long long int tmpId;
+            ss>>tmpId;
+
+            if (tmpId==GuestID){
+                string session,tmp;
+                stringstream tt(ss.str());
+
+                while (getline(tt,session,','));
+                cout<<"Last Session ID : "<<session<<endl;
+
+                //to extract 
+                stringstream temp(session);
+                getline(temp,tmp,':');
+                getline(temp,tmp,':');
+                int rideNo = stoi(tmp);
+
+                //Opening Ride File to get session info
+                string path("../Files/Rides/Ride");
+                path.append( to_string(rideNo));
+                path.append(".txt");
+
+                ifstream file;
+                file.open(path);
+                string line;
+                if (file.is_open()){
+                    
+                    while (getline(file,line)){
+                        stringstream tt(line);
+                        string sessionId;
+
+                        tt>>tmp;
+                        tt>>sessionId;
+
+                        if (sessionId == session){
+                            string date,time;
+
+                            tt>>tmp;
+                            tt>>date;
+                            tt>>tmp;
+                            tt>>time;
+                            
+                            cout<<"Date : "<<date<<endl;
+                            cout<<"Time : "<<time<<endl;
+                        }
+                    }
+                }   
+                else{
+                    cout<<"Error opening Ride file"<<endl;
+                } 
+
+                break;
+            }
+        }
+
+        
+    }
+    else{
+        cout<<"Error opening Guestdata file"<<endl;
+    }
+    file.close();
+
+
+
+
+
+
 }

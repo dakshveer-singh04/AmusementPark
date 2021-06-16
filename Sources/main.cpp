@@ -1,10 +1,29 @@
-#include "../Headers/Guest.cpp"
-#include "../Headers/Ride.cpp"
 #include "../Headers/Admin.cpp"
-//#include "../Headers/Extras.cpp"
+#include "../Headers/Ride.cpp"
+// #include "../Headers/Guest.cpp"  #included in Ride.cpp
 #include <iostream>
 
 using namespace std;
+
+bool FoundRide(unsigned short int CurrID){
+    bool flag = false;
+    string line;
+    ifstream file;
+     
+    file.open("../Files/Rides/Rides.txt");
+    
+    while(getline(file,line)){
+        stringstream ss(line);
+        int tmpId;
+        ss>>tmpId;
+        if (tmpId==CurrID){
+            flag=true;
+            break;
+        }
+    }
+    return flag;
+}
+
 
 int main(){
     int ch;
@@ -12,10 +31,9 @@ int main(){
     do {
         cout<<endl<<"WELOCOME TO AMUSEMENT PARK"<<endl;
         cout<<"1. Admin Login"<<endl;
-        cout<<"2. Support Login"<<endl;
-        cout<<"3. Rides Login"<<endl;
-        cout<<"4. Guest Login"<<endl;
-        cout<<"5. Exit "<<endl;
+        cout<<"2. Rides Login"<<endl;
+        cout<<"3. Guest Login"<<endl;
+        cout<<"4. Exit "<<endl;
 
         cout<<"Enter your choice : ";
         cin>>ch;
@@ -33,13 +51,13 @@ int main(){
                         break;
                     }
 
-                } while(pass!=Ad.pass);
+                } while( hashFunc(pass)!=Ad.pass);
 
                 if (pass == "0" ){
                     break;
                 }
 
-                if( pass == Ad.pass ){
+                if( hashFunc(pass) == Ad.pass ){
                     int a_ch;
                     do {
                         cout<<endl<<"1. Search a Guest  "<<endl;
@@ -54,7 +72,11 @@ int main(){
 
                         switch(a_ch){
                             case 1: {
-                                cout<<"Option not available now"<<endl;
+                                unsigned long long int Id;
+                                cout<<"Enter Guest Id to search : ";
+                                cin>>Id;
+
+                                Ad.searchGuest(Id);
                                 break;
                             }
                             case 2: {
@@ -146,29 +168,48 @@ int main(){
 
                 } while (ch);
 
-
-
                 break;
             }
 
             case 3:{
-                cout<<"Option not available now"<<endl;
+                int select ;
+                do {
+                    Guest guestobj;
+                    cout<<"GUEST PAGE"<<endl;
+                    cout<<"1. For guest entry"<<endl;
+                    cout<<"2. For Reviewing us"<<endl;
+                    cout<<"3. Exit"<<endl;
 
+                    cout<<"Enter your choice : ";
+                    cin>>select;
 
+                    switch(select){
+                        case 1:{
+                            guestobj.input() ;
+                            guestobj.putVars();
+                            break;
+                        }
+                        case 2:{
+                            guestobj.ratings() ;
+                            guestobj.putVars();
+                            break;
+                        }
+                        case 3:{
+                            select=0;
+                            break;
+                        }
+                        default:{
+                            cout<<"Invalid Choice!"<<endl;
+                            break;
+                        }
+                    }
+                } while(select);
 
                 break;
             }
 
             case 4:{
-                cout<<"Option not available now"<<endl;
-
-
-
-                break;
-            }
-
-            case 5:{
-                cout<<"Unsaved data will be lost"<<endl;
+                cout<<"Unsaved data was lost"<<endl;
                 ch=0;
                 break;
             }

@@ -6,25 +6,7 @@
 
 using namespace std;
 
-bool FoundRide(unsigned short int CurrID){
-    bool flag = false;
-    string line;
-    ifstream file;
-     
-    file.open("../Files/Rides/Rides.txt");
-    
-    while(getline(file,line)){
-        stringstream ss(line);
-        int tmpId;
-        ss>>tmpId;
-        if (tmpId==CurrID){
-            flag=true;
-            break;
-        }
-    }
-    
-    return flag;
-}
+
 
 string getDate(){
     time_t now = time(0) ;
@@ -46,4 +28,66 @@ string getDate(){
     time<<day;
 
     return time.str();
+}
+
+
+string hashFunc(string password){
+    stringstream local ;
+    
+    int len = password.length() ;
+    int array[len] ;
+    
+    for (int i = 0 ; i < len ; i++){
+
+        array[i] = password[i] ;
+        if (array[i] < 100)
+            local<<"0" ;
+        local<<array[i] ;
+    }
+    string pass = local.str() ;
+    
+    for (int i=0 ; i<4 ; i++)    // shift cipher
+    {
+        string tmp = pass.substr(0,3) ;
+        pass.erase(0,3) ;
+        pass.append(tmp) ;
+    }
+      
+    return pass;
+}
+
+template <class T>
+bool between(T a, T min, T max){
+    // check if a is between min and max
+    if ( a>=min && max>=a){
+        return true;
+    }
+    
+    return false;
+}
+
+string getTime(){
+    time_t now = time(0);
+    tm *ltm = localtime(&now);
+    // India is +5:30 frot GMT
+
+    int sec = ltm->tm_sec;
+    int min = ltm->tm_min + 30;
+    int hr  = ltm->tm_hour+5;
+
+    if (min > 59){
+        min -= 60; 
+        hr ++;
+    }
+
+    string ans("(");
+
+    ans.append(to_string(hr));
+    ans.append(":");
+    ans.append(to_string(min));
+    ans.append(":");
+    ans.append(to_string(sec));
+    ans.append(")");
+
+    return ans;
 }
