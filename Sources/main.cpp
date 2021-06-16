@@ -5,35 +5,13 @@
 
 using namespace std;
 
-bool FoundRide(unsigned short int CurrID){
-    /*
-        Function to check if a ride is found
-    */
-
-    bool flag = false;
-    string line;
-    ifstream file;
-     
-    file.open("../Files/Rides/Rides.txt");
-    
-    while(getline(file,line)){
-        stringstream ss(line);
-        int tmpId;
-        ss>>tmpId;
-        if (tmpId==CurrID){
-            flag=true;
-            break;
-        }
-    }
-    return flag;
-}
-
+bool FoundRide(unsigned short int CurrID);
 
 int main(){
     int ch;
 
     do {
-        cout<<endl<<"WELOCOME TO AMUSEMENT PARK"<<endl;
+        cout<<endl<<endl<<"WELOCOME TO AMUSEMENT PARK"<<endl;
         cout<<"1. Admin Login"<<endl;
         cout<<"2. Rides Login"<<endl;
         cout<<"3. Guest Login"<<endl;
@@ -85,17 +63,14 @@ int main(){
                                 break;
                             }
                             case 2: {
-                                cout<<"Option under development now"<<endl;
                                 Ad.addRide();
                                 break;
                             }
                             case 3: {
-                                cout<<"Option under available now"<<endl;
                                 Ad.updateRide();
                                 break;
                             }
                             case 4: {
-                                cout<<"Option under development now"<<endl;
                                 Ad.deleteRide();
                                 break;
                             }
@@ -122,7 +97,6 @@ int main(){
 
             case 2:{
                 unsigned short int RideId;
-                cout<<"Option under development now"<<endl;
                 
                 do {
                     cout<<"Enter Ride Id to operate (0 to exit ): ";
@@ -150,8 +124,8 @@ int main(){
                 Ride CurrRide(RideId); // Creating the ride instance
 
                 do {
-                    cout<<endl<<"Menu for Ride No "<<RideId<<endl;
-                    cout<<"1. Start a new session : "<<endl;
+                    cout<<endl<<"MENU for Ride No "<<RideId<<endl;
+                    cout<<"1. Start a new session "<<endl;
                     cout<<"2. Exit "<<endl;
 
                     cout<<"Enter your choice : ";
@@ -159,7 +133,6 @@ int main(){
 
                     switch(ch){
                         case 1:{
-                            cout<<"Option under development now";
                             CurrRide.StartNewSession();
                             break;
                         }
@@ -183,7 +156,7 @@ int main(){
                 int select ;
                 do {
                     Guest guestobj;
-                    cout<<"GUEST PAGE"<<endl;
+                    cout<<endl<<"GUEST PAGE"<<endl;
                     cout<<"1. For guest entry"<<endl;
                     cout<<"2. For Reviewing us"<<endl;
                     cout<<"3. Exit"<<endl;
@@ -218,6 +191,10 @@ int main(){
 
             case 4:{
                 cout<<"Unsaved data was lost"<<endl;
+                cout<<endl<<"THANKS FOR USING"<<endl;
+                cout<<endl<<"Made with Love"<<endl;
+                cout<<"By :- Krupal Shah(202001057)"<<endl;
+                cout<<"      Dakshveer Singh(202001048)"<<endl;
                 ch=0;
                 break;
             }
@@ -230,4 +207,27 @@ int main(){
     } while(ch);
 
     return 0;
+}
+
+
+bool FoundRide(unsigned short int CurrID){
+    /*
+        Function to check if a ride is found
+    */
+    bool flag = false;
+    string line;
+    ifstream file;
+     
+    file.open("../Files/Rides/Rides.txt");
+    
+    while(getline(file,line)){
+        stringstream ss(line);
+        int tmpId;
+        ss>>tmpId;
+        if (tmpId==CurrID){
+            flag=true;
+            break;
+        }
+    }
+    return flag;
 }

@@ -73,20 +73,13 @@ bool between(T a, T min, T max){
 string getTime(){
     /* Function to return string of time
     */
-
     time_t now = time(0);
     tm *ltm = localtime(&now);
     // India is +5:30 frot GMT
-
     int sec = ltm->tm_sec;
-    int min = ltm->tm_min + 30;
-    int hr  = ltm->tm_hour+5;
-
-    if (min > 59){
-        min -= 60; 
-        hr ++;
-    }
-
+    int min = ltm->tm_min ;
+    int hr  = ltm->tm_hour;
+    
     string ans("(");
 
     ans.append(to_string(hr));
